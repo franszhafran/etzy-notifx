@@ -3,7 +3,7 @@ import axios, { AxiosError } from 'axios';
 import { UninterceptedApiError } from '@/types/api';
 
 const api = axios.create({
-  baseURL: 'http://127.0.0.1:8000/api/v1',
+  baseURL: 'http://localhost:4000/api',
   headers: {
     'Content-Type': 'application/json',
   },
@@ -15,6 +15,7 @@ api.interceptors.request.use(function (config) {
   if (config.headers) {
     config.headers.Authorization = token ? `Bearer ${token}` : '';
   }
+
   return config;
 });
 
