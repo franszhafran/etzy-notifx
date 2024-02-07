@@ -3,6 +3,7 @@ const nextConfig = {
   eslint: {
     dirs: ['src'],
   },
+  output: 'standalone',
 
   reactStrictMode: true,
   pageExtensions: ['page.tsx', 'api.ts'],
