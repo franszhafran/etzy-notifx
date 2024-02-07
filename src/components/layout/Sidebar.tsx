@@ -51,10 +51,13 @@ export default function Sidebar() {
   ];
   return (
     <nav className='col-span-2 h-full relative flex gap-4 p-4 flex-col bg-blue-700'>
-      <div className='w-full flex items-center justify-center'>
+      <div className='w-full flex flex-col items-center justify-center'>
         <div className='bg-white rounded-lg p-2 px-4'>
           <Image alt='logo' src='/images/logo.png' height={16} width={110} />
         </div>
+        <span className='mt-2 bg-yellow-100 text-yellow-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded-full dark:bg-yellow-900 dark:text-yellow-300'>
+          Beta
+        </span>
       </div>
       <div className='w-full flex flex-col gap-2 mt-8 items-center'>
         {menus.map((v) => {

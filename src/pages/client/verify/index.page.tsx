@@ -1,4 +1,7 @@
-import { useRouter } from 'next/navigation';
+'use client';
+
+import { AxiosError } from 'axios';
+import { useRouter, useSearchParams } from 'next/navigation';
 import * as React from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
@@ -11,30 +14,49 @@ import Seo from '@/components/Seo';
 
 import api from '@/pages/api/axios';
 
-type RegisterForm = {
-  name: string;
+type VerifyForm = {
   email: string;
-  phone: string;
-  password: string;
+  code: string;
 };
 
 export default function Page() {
-  const methods = useForm<RegisterForm>({
+  const params = useSearchParams();
+  const router = useRouter();
+  const email = params.get('email');
+
+  const methods = useForm<VerifyForm>({
     mode: 'onTouched',
+    defaultValues: {
+      email: email ? email : '',
+      code: '',
+    },
   });
 
   const formData = methods.watch();
-  const router = useRouter();
+
+  // if (!email) {
+  //   router.replace('/');
+  //   return;
+  // }
 
   const handleSubmit = async () => {
     try {
-      const response = await api.post('/register', formData);
+      const response = await api.post('/verify', formData);
       if (response.status === 201) {
-        toast.success('Account created! Let us verify you!');
-        router.push('/client/verify?email=' + formData.email);
+        toast.success('Account verified! Sign in to start the journey!');
+        router.replace('/client/login');
       }
-    } catch {
-      toast('error');
+    } catch (e) {
+      if (e instanceof AxiosError) {
+        if (e.response?.data.message instanceof Array) {
+          const x: string[] = e.response.data.message;
+          x.map((v) => {
+            toast.error(v);
+          });
+          return;
+        }
+      }
+      toast.error('Internal server error');
     }
   };
 
@@ -48,38 +70,28 @@ export default function Page() {
             <div className='flex flex-col items-center justify-center w-full'>
               <MockLogo />
               <div className='h-4' />
-              <p className='text-xl font-bold'>Client Register</p>
-              <p className='text-sm text-gray-400'>Let us get to know you!</p>
+              <p className='text-xl font-bold'>Client Verify</p>
+              <p className='text-sm text-gray-400'>
+                Verify your identity by entering sent code!
+              </p>
             </div>
             <div className='flex flex-col gap-4 mt-8'>
               <FormProvider {...methods}>
-                <Input
-                  label='Name'
-                  placeholder='name'
-                  id='name'
-                  required={true}
-                />
                 <Input
                   label='Email'
                   placeholder='email'
                   id='email'
                   required={true}
+                  defaultValue={email ? email : ''}
+                  readOnly={true}
                 />
                 <Input
-                  label='Phone Number'
-                  placeholder='with country code. e.g. 6281320207000'
-                  id='phone'
+                  label='OTP Code'
+                  placeholder='your OTP Code... check your WhatsApp'
+                  id='code'
                   required={true}
                 />
-                <Input
-                  label='Password'
-                  placeholder='password'
-                  type='password'
-                  id='password'
-                  required={true}
-                  validation={{ minLength: 8 }}
-                />
-                <Button onClick={handleSubmit}>Register</Button>
+                <Button onClick={handleSubmit}>Verify</Button>
               </FormProvider>
             </div>
             <div className='h-px w-full bg-gray-200' />

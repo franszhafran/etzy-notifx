@@ -20,9 +20,7 @@ export default function DashboardLayout({
   return (
     <div className='w-full grid grid-cols-12 overflow-y-auto'>
       <Sidebar />
-      <div className='col-span-10 h-screen overflow-y-auto bg-gray-200'>
-        {children}
-      </div>
+      <div className='col-span-10 h-screen overflow-y-auto'>{children}</div>
       <BaseDialog
         onClose={handleClose}
         onSubmit={handleSubmit}

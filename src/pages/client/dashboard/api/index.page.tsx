@@ -52,13 +52,20 @@ export default function Page() {
   const testCallbackURL = `/api-key/webhook-test`;
   const [callbackResult, setCallbackResult] = React.useState(null);
 
-  const testCallback = () => {
-    api
-      .post(testCallbackURL)
-      .then((res) => res.data.data)
-      .then((d) => {
-        setCallbackResult(d);
-      });
+  const testCallback = async () => {
+    if (methods.formState.isValid) {
+      api
+        .post(testCallbackURL)
+        .then((res) => res.data.data)
+        .then((d) => {
+          setCallbackResult(d);
+        })
+        .catch(() => {
+          toast.error('webhook test failed');
+        });
+      return;
+    }
+    toast.error('callback url invalid');
   };
   // #endregion //* ========= Test Callback =========
 
@@ -100,6 +107,9 @@ export default function Page() {
                 <Input
                   label='Callback URL'
                   id='callback_url'
+                  validation={{
+                    minLength: 3,
+                  }}
                   defaultValue={apiKey?.callback_url}
                 ></Input>
                 <div className='flex gap-4'>

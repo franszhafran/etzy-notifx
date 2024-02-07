@@ -1,4 +1,3 @@
-import { useRouter } from 'next/navigation';
 import * as React from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
@@ -16,7 +15,6 @@ import useAuthStore from '@/store/useAuthStore';
 import api from '@/pages/api/axios';
 
 export default function Page() {
-  const router = useRouter();
   const methods = useForm({
     mode: 'onTouched',
   });
@@ -30,8 +28,10 @@ export default function Page() {
       const token = response.data?.data?.token;
       if (token !== null || token !== undefined) {
         login(token);
-        toast.success("Alright! Let's start it! Give us a moment...");
-        router.replace('/client/dashboard/');
+        toast.success(
+          'Alright! However, we are still on beta. Please stay tune to our website',
+        );
+        // router.replace('/client/dashboard/');
       }
     } catch (e) {
       toast('error');
@@ -56,16 +56,25 @@ export default function Page() {
             </div>
             <div className='flex flex-col gap-4 mt-8'>
               <FormProvider {...methods}>
-                <Input label='Email' placeholder='email' id='email' />
-                <Input
-                  label='Password'
-                  type='password'
-                  placeholder='password'
-                  id='password'
-                />
-                <Button onClick={handleSubmit} disabled={isAuthenticated}>
-                  Login
-                </Button>
+                <form
+                  onSubmit={methods.handleSubmit(handleSubmit)}
+                  className='max-w-full space-y-3'
+                >
+                  <Input label='Email' placeholder='email' id='email' />
+                  <Input
+                    label='Password'
+                    type='password'
+                    placeholder='password'
+                    id='password'
+                  />
+                  <Button
+                    className='w-full'
+                    onClick={handleSubmit}
+                    disabled={isAuthenticated}
+                  >
+                    Login
+                  </Button>
+                </form>
               </FormProvider>
             </div>
             <div className='h-px w-full bg-gray-200' />

@@ -24,16 +24,35 @@ export default function HomePage() {
       <main className=''>
         <Header />
         <section className='w-full bg-blue-800' id='home'>
-          <div className='w-full bg-blue-800 flex justify-center items-center relative pt-16'>
+          <div className='w-full bg-blue-800 flex justify-center items-center relative pt-16 '>
+            <div className='hidden absolute md:flex w-full h-full justify-center items-center'>
+              <div
+                style={{ height: '1500px', width: '1500px' }}
+                className='rounded-full bg-blue-700'
+              ></div>
+            </div>
+            <div className='hidden absolute md:flex w-full h-full justify-center items-center'>
+              <div
+                style={{ height: '1200px', width: '1200px' }}
+                className='rounded-full bg-blue-600'
+              ></div>
+            </div>
+            <div className='hidden absolute md:flex w-full h-full justify-center items-center'>
+              <div
+                style={{ height: '900px', width: '900px' }}
+                className='rounded-full bg-blue-500'
+              ></div>
+            </div>
             <div className='w-full md:w-9/12 flex flex-col justify-between md:flex-row'>
-              <div className='text-white px-12 py-12 md:px-0 md:py-64'>
-                <p className='font-bold text-white text-4xl notifx-font'>
+              <div className='text-white px-12 py-12 md:px-0 md:py-64 relative z-0'>
+                <p className='font-bold text-white text-6xl notifx-font relative z-10'>
                   NotifX
                 </p>
-                <p>
-                  Worry free notification partner! Highly reliably at lowest
-                  price!
+                <p className='text-xl font-regular'>
+                  Worry free notification partner! <br /> Highly reliable at
+                  lowest price!
                 </p>
+                <br></br>
                 <br></br>
                 <a href='/client/register'>
                   <Button variant='outline-blue' className='text-white'>
@@ -41,11 +60,13 @@ export default function HomePage() {
                   </Button>
                 </a>
               </div>
-              <div className='flex items-end justify-center pb-12 md:pb-0'>
+              <div className='flex items-end justify-center relative pb-12 md:pb-0'>
                 <Image
                   alt='demo'
                   className='md:hidden'
                   src='/images/demo.png'
+                  width={300}
+                  height={300}
                   style={{ maxWidth: '80%' }}
                 ></Image>
                 <Image
@@ -53,18 +74,21 @@ export default function HomePage() {
                   src='/images/demo-crop.webp'
                   className='hidden md:block'
                   style={{ maxWidth: 350 }}
+                  width={350}
+                  height={350}
                 ></Image>
               </div>
             </div>
           </div>
         </section>
-        <section className='bg-white' id='features'>
+        <section className='bg-white relative' id='features'>
           <div className='w-full flex flex-col py-16 items-center gap-16'>
-            <p className='text-center text-3xl text-blue-800 font-bold'>
+            <p className='text-center text-3xl text-blue-800 font-bold relative'>
               Features
+              {/* <div className='h-1 w-8 bg-blue-500 absolute' style={{ top: '-0.5em', left: '-1em' }}></div> */}
             </p>
             <div className='w-9/12 grid md:grid-cols-3 gap-8 justify-between'>
-              <div className='p-12 md:py-16 md:px-8 rounded-xl flex flex-col gap-4 items-center bg-blue-800 text-white'>
+              <div className='p-12 md:py-16 md:px-8 rounded-xl flex flex-col gap-4 items-center bg-blue-800 text-white hover:shadow-lg hover:bg-blue-700 cursor-pointer'>
                 <Send className='block w-32 text-white h-32' />
                 <p className='font-bold'>Whatsapp Notification</p>
                 <p className='text-center'>
@@ -72,7 +96,7 @@ export default function HomePage() {
                   through WhatsApp notifications
                 </p>
               </div>
-              <div className='p-12 md:py-16 md:px-8 rounded-xl flex flex-col gap-4 items-center bg-blue-800 text-white'>
+              <div className='p-12 md:py-16 md:px-8 rounded-xl flex flex-col gap-4 items-center bg-blue-800 text-white hover:shadow-lg hover:bg-blue-700 cursor-pointer'>
                 <LayoutDashboard className='block w-32 text-white h-32' />
                 <p className='font-bold'>API Management</p>
                 <p className='text-center'>
@@ -80,7 +104,7 @@ export default function HomePage() {
                   powerful API management solution
                 </p>
               </div>
-              <div className='p-12 md:py-16 md:px-8 rounded-xl flex flex-col gap-4 items-center bg-blue-800 text-white'>
+              <div className='p-12 md:py-16 md:px-8 rounded-xl flex flex-col gap-4 items-center bg-blue-800 text-white hover:shadow-lg hover:bg-blue-700 cursor-pointer'>
                 <Webhook className='block w-32 text-white h-32' />
                 <p className='font-bold'>Webhook Call</p>
                 <p className='text-center'>
@@ -88,7 +112,7 @@ export default function HomePage() {
                   better user experience
                 </p>
               </div>
-              <div className='p-12 md:py-16 md:px-8 rounded-xl flex flex-col gap-4 items-center bg-blue-800 text-white'>
+              <div className='p-12 md:py-16 md:px-8 rounded-xl flex flex-col gap-4 items-center bg-blue-800 text-white hover:shadow-lg hover:bg-blue-700 cursor-pointer'>
                 <Globe2 className='block w-32 text-white h-32' />
                 <p className='font-bold'>Global Number Pool</p>
                 <p className='text-center'>
@@ -97,7 +121,7 @@ export default function HomePage() {
                   messages
                 </p>
               </div>
-              <div className='p-12 md:py-16 md:px-8 rounded-xl flex flex-col gap-4 items-center bg-blue-800 text-white'>
+              <div className='p-12 md:py-16 md:px-8 rounded-xl flex flex-col gap-4 items-center bg-blue-800 text-white hover:shadow-lg hover:bg-blue-700 cursor-pointer'>
                 <ShieldOff className='block w-32 text-white h-32' />
                 <p className='font-bold text-center'>
                   Service Level Agreement (SLA)
@@ -107,7 +131,7 @@ export default function HomePage() {
                   ensuring uninterrupted communication with your audience
                 </p>
               </div>
-              <div className='p-12 md:py-16 md:px-8 rounded-xl flex flex-col gap-4 items-center bg-blue-800 text-white'>
+              <div className='p-12 md:py-16 md:px-8 rounded-xl flex flex-col gap-4 items-center bg-blue-800 text-white hover:shadow-lg hover:bg-blue-700 cursor-pointer'>
                 <TimerReset className='block w-32 text-white h-32' />
                 <p className='font-bold'>Spam Protection</p>
                 <p className='text-center'>
