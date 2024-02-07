@@ -10,7 +10,8 @@ const isServer = () => {
 let context = <GetServerSidePropsContext>{};
 
 const api = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_API_URL ?? 'https://api-pgsf.etzy.site/api',
+  baseURL:
+    process.env.NEXT_PUBLIC_API_URL ?? 'https://api-notifx.etzy.site/api',
   headers: {
     'Content-Type': 'application/json',
   },
