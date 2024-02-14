@@ -4,7 +4,7 @@ export type ApiResponse<T> = {
 };
 
 export type ApiError = {
-  message: string;
+  message: string | string[] | undefined | null;
 };
 
 export type UninterceptedApiError = {

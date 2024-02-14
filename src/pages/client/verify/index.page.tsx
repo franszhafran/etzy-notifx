@@ -90,6 +90,16 @@ export default function Page() {
                   placeholder='your OTP Code... check your WhatsApp'
                   id='code'
                   required={true}
+                  validation={{
+                    minLength: {
+                      value: 8,
+                      message: 'Code must be exactly 6 characters',
+                    },
+                    maxLength: {
+                      value: 8,
+                      message: 'Code must be exactly 6 characters',
+                    },
+                  }}
                 />
                 <Button onClick={handleSubmit}>Verify</Button>
               </FormProvider>

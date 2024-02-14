@@ -1,3 +1,4 @@
+import { AxiosError } from 'axios';
 import { useRouter } from 'next/navigation';
 import * as React from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
@@ -10,6 +11,8 @@ import MockLogo from '@/components/MockLogo';
 import Seo from '@/components/Seo';
 
 import api from '@/pages/api/axios';
+
+import { ApiError } from '@/types/api';
 
 type RegisterForm = {
   name: string;
@@ -33,8 +36,21 @@ export default function Page() {
         toast.success('Account created! Let us verify you!');
         router.push('/client/verify?email=' + formData.email);
       }
-    } catch {
-      toast('error');
+    } catch (e: unknown) {
+      if (e instanceof AxiosError) {
+        const data = e.response?.data as ApiError;
+        if (data.message instanceof String) {
+          toast.error(data.message as string);
+          return;
+        }
+        if (data.message !== undefined && data.message !== null) {
+          const messages = data.message as string[];
+          messages.map((v) => {
+            toast.error(v);
+          });
+          return;
+        }
+      }
     }
   };
 
@@ -58,18 +74,40 @@ export default function Page() {
                   placeholder='name'
                   id='name'
                   required={true}
+                  validation={{
+                    minLength: {
+                      value: 8,
+                      message: 'Name must be longer than 8 chararacters',
+                    },
+                    required: 'Name is required',
+                  }}
                 />
                 <Input
                   label='Email'
                   placeholder='email'
                   id='email'
                   required={true}
+                  validation={{
+                    pattern: {
+                      value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                      message: 'Please provide valid email address',
+                    },
+                    required: 'Email is required',
+                  }}
                 />
                 <Input
                   label='Phone Number'
                   placeholder='with country code. e.g. 6281320207000'
                   id='phone'
                   required={true}
+                  validation={{
+                    pattern: {
+                      value: /^\d{1,3}\s?\d{3,}$/,
+                      message:
+                        'Phone number with country code. e.g. 6281320207000',
+                    },
+                    required: 'Phone number is required',
+                  }}
                 />
                 <Input
                   label='Password'
@@ -77,7 +115,13 @@ export default function Page() {
                   type='password'
                   id='password'
                   required={true}
-                  validation={{ minLength: 8 }}
+                  validation={{
+                    minLength: {
+                      value: 8,
+                      message: 'Password must be longer than 8 chararacters',
+                    },
+                    required: 'Password is required',
+                  }}
                 />
                 <Button onClick={handleSubmit}>Register</Button>
               </FormProvider>

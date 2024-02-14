@@ -1,8 +1,7 @@
+import { AxiosError } from 'axios';
 import * as React from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
-
-import logger from '@/lib/logger';
 
 import Button from '@/components/buttons/Button';
 import Input from '@/components/forms/Input';
@@ -14,6 +13,8 @@ import useAuthStore from '@/store/useAuthStore';
 
 import api from '@/pages/api/axios';
 
+import { ApiError } from '@/types/api';
+
 export default function Page() {
   const methods = useForm({
     mode: 'onTouched',
@@ -23,6 +24,11 @@ export default function Page() {
   const { login, isAuthenticated } = useAuthStore();
 
   const handleSubmit = async () => {
+    const d = await methods.trigger();
+
+    if (!d) {
+      return;
+    }
     try {
       const response = await api.post('/login', formData);
       const token = response.data?.data?.token;
@@ -33,9 +39,21 @@ export default function Page() {
         );
         // router.replace('/client/dashboard/');
       }
-    } catch (e) {
-      toast('error');
-      logger({ error: e });
+    } catch (e: unknown) {
+      if (e instanceof AxiosError) {
+        const data = e.response?.data as ApiError;
+        if (data.message instanceof String) {
+          toast.error(data.message as string);
+          return;
+        }
+        if (data.message !== undefined && data.message !== null) {
+          const messages = data.message as string[];
+          messages.map((v) => {
+            toast.error(v);
+          });
+          return;
+        }
+      }
     }
   };
 
@@ -60,12 +78,31 @@ export default function Page() {
                   onSubmit={methods.handleSubmit(handleSubmit)}
                   className='max-w-full space-y-3'
                 >
-                  <Input label='Email' placeholder='email' id='email' />
+                  <Input
+                    label='Email'
+                    placeholder='email'
+                    id='email'
+                    type='email'
+                    validation={{
+                      pattern: {
+                        value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                        message: 'Please provide valid email address',
+                      },
+                      required: 'Email is required',
+                    }}
+                  />
                   <Input
                     label='Password'
                     type='password'
                     placeholder='password'
                     id='password'
+                    validation={{
+                      minLength: {
+                        value: 8,
+                        message: 'Password must be longer than 8 chararacters',
+                      },
+                      required: 'Password is required',
+                    }}
                   />
                   <Button
                     className='w-full'

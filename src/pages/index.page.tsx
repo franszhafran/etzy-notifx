@@ -158,6 +158,9 @@ export default function HomePage() {
                     /1.000(+250) messages
                   </span>
                 </p>
+                <p className='text-xm md:text-sm font-thin'>
+                  *We are currently free on beta version
+                </p>
               </div>
               <div className=' text-black text-4xl'>
                 <Coins className='hidden md:block h-64 w-64 text-white text-4xl'></Coins>
