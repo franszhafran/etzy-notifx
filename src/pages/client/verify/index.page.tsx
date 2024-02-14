@@ -92,11 +92,11 @@ export default function Page() {
                   required={true}
                   validation={{
                     minLength: {
-                      value: 8,
+                      value: 6,
                       message: 'Code must be exactly 6 characters',
                     },
                     maxLength: {
-                      value: 8,
+                      value: 6,
                       message: 'Code must be exactly 6 characters',
                     },
                   }}
